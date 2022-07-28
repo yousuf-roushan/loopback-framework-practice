@@ -17,8 +17,8 @@ import {
   requestBody,
   response, HttpErrors,
 } from '@loopback/rest';
-import {User} from '../models';
-import {UserRepository} from '../repositories';
+import {MyUser} from '../models';
+import {MyUserRepository} from '../repositories';
 import {Geocoder} from "../services";
 import {inject} from "@loopback/core";
 import {authenticate} from "@loopback/authentication";
@@ -26,44 +26,29 @@ import {authenticate} from "@loopback/authentication";
 @authenticate('jwt')
 export class UserControllerController {
   constructor(
-    @repository(UserRepository)
-    public userRepository : UserRepository,
+    @repository(MyUserRepository)
+    public userRepository : MyUserRepository,
     @inject('services.Geocoder') protected geoService: Geocoder,
   ) {}
 
   @post('/user')
   @response(200, {
     description: 'User model instance',
-    content: {'application/json': {schema: getModelSchemaRef(User)}},
+    content: {'application/json': {schema: getModelSchemaRef(MyUser)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(User, {
+          schema: getModelSchemaRef(MyUser, {
             title: 'NewUser',
             exclude: ['id'],
           }),
         },
       },
     })
-    user: Omit<User, 'id'>,
-  ): Promise<User> {
-    if (user.remindAtAddress) {
-      const geo = await this.geoService.geocode(user.remindAtAddress);
-
-      if (!geo[0]) {
-        // address not found
-        throw new HttpErrors.BadRequest(
-            `Address not found: ${user.remindAtAddress}`,
-        );
-      }
-
-      // Encode the coordinates as "lat,lng" (Google Maps API format). See also
-      // https://stackoverflow.com/q/7309121/69868
-      // https://gis.stackexchange.com/q/7379
-      user.remindAtGeo = `${geo[0].y},${geo[0].x}`;
-    }
+    user: Omit<MyUser, 'id'>,
+  ): Promise<MyUser> {
     return this.userRepository.create(user);
   }
 
@@ -73,7 +58,7 @@ export class UserControllerController {
     content: {'application/json': {schema: CountSchema}},
   })
   async count(
-    @param.where(User) where?: Where<User>,
+    @param.where(MyUser) where?: Where<MyUser>,
   ): Promise<Count> {
     return this.userRepository.count(where);
   }
@@ -85,14 +70,14 @@ export class UserControllerController {
       'application/json': {
         schema: {
           type: 'array',
-          items: getModelSchemaRef(User, {includeRelations: true}),
+          items: getModelSchemaRef(MyUser, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.filter(User) filter?: Filter<User>,
-  ): Promise<User[]> {
+    @param.filter(MyUser) filter?: Filter<MyUser>,
+  ): Promise<MyUser[]> {
     return this.userRepository.find(filter);
   }
 
@@ -105,12 +90,12 @@ export class UserControllerController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(User, {partial: true}),
+          schema: getModelSchemaRef(MyUser, {partial: true}),
         },
       },
     })
-    user: User,
-    @param.where(User) where?: Where<User>,
+    user: MyUser,
+    @param.where(MyUser) where?: Where<MyUser>,
   ): Promise<Count> {
     return this.userRepository.updateAll(user, where);
   }
@@ -120,14 +105,14 @@ export class UserControllerController {
     description: 'User model instance',
     content: {
       'application/json': {
-        schema: getModelSchemaRef(User, {includeRelations: true}),
+        schema: getModelSchemaRef(MyUser, {includeRelations: true}),
       },
     },
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(User, {exclude: 'where'}) filter?: FilterExcludingWhere<User>
-  ): Promise<User> {
+    @param.filter(MyUser, {exclude: 'where'}) filter?: FilterExcludingWhere<MyUser>
+  ): Promise<MyUser> {
     return this.userRepository.findById(id, filter);
   }
 
@@ -140,11 +125,11 @@ export class UserControllerController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(User, {partial: true}),
+          schema: getModelSchemaRef(MyUser, {partial: true}),
         },
       },
     })
-    user: User,
+    user: MyUser,
   ): Promise<void> {
     await this.userRepository.updateById(id, user);
   }
@@ -155,7 +140,7 @@ export class UserControllerController {
   })
   async replaceById(
     @param.path.number('id') id: number,
-    @requestBody() user: User,
+    @requestBody() user: MyUser,
   ): Promise<void> {
     await this.userRepository.replaceById(id, user);
   }

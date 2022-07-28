@@ -1,17 +1,7 @@
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
-export class User extends Entity {
-
-  @property ({
-    type: 'string'
-  })
-  remindAtAddress?: string;
-
-  @property({
-    type:'string'
-  })
-  remindAtGeo?: string;
+export class MyUser extends Entity {
 
   @property({
     type: 'number',
@@ -24,12 +14,6 @@ export class User extends Entity {
     type: 'string',
   })
   name?: string;
-
-  @property(
-      {
-        type: 'string',
-      })
-  address?: string;
 
   @property({
     type: 'date',
@@ -47,13 +31,13 @@ export class User extends Entity {
   mobileNumber?: number;
 
 
-  constructor(data?: Partial<User>) {
+  constructor(data?: Partial<MyUser>) {
     super(data);
   }
 }
 
-export interface UserRelations {
+export interface MyUserRelations {
   // describe navigational properties here
 }
 
-export type UserWithRelations = User & UserRelations;
+export type UserWithRelations = MyUser & MyUserRelations;

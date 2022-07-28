@@ -20,7 +20,7 @@ import {
     UserServiceBindings
 } from '@loopback/authentication-jwt';
 
-import {UserdbDataSource} from './datasources';
+import {MyUserdbDataSource} from './datasources';
 
 export {ApplicationConfig};
 
@@ -59,7 +59,7 @@ export class DemoApplication extends BootMixin(
     // Mount jwt component
     this.component(JWTAuthenticationComponent);
     // Bind datasource
-    this.dataSource(UserdbDataSource, UserServiceBindings.DATASOURCE_NAME);
+    this.dataSource(MyUserdbDataSource, UserServiceBindings.DATASOURCE_NAME);
     // ------------- END OF SNIPPET -------------
   }
 }

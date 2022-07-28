@@ -6,16 +6,28 @@ import {
   TokenServiceBindings,
   MyUserService,
   UserServiceBindings,
-  UserRepository, Credentials
+  UserRepository, Credentials, User
 } from "@loopback/authentication-jwt";
 
 import {TokenService} from "@loopback/authentication";
 
 import {SecurityBindings, UserProfile} from '@loopback/security';
 
-import {repository} from '@loopback/repository';
+import {model, property, repository} from '@loopback/repository';
 
-import {post, requestBody, SchemaObject} from '@loopback/rest';
+import {post, requestBody, SchemaObject, getModelSchemaRef} from '@loopback/rest';
+
+import {genSalt, hash} from 'bcryptjs';
+import _ from 'lodash';
+
+@model()
+export class NewAuthenticateRequest extends User {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  password: string;
+}
 
 const CredentialsSchema: SchemaObject = {
   type: 'object',
@@ -48,10 +60,48 @@ export class AuthenticationController {
       public userService: MyUserService,
       @inject(SecurityBindings.USER, {optional: true})
       public user: UserProfile,
-      @repository(UserRepository) protected userRepository: UserRepository,
+      @inject(UserServiceBindings.USER_REPOSITORY)
+      protected userRepository: UserRepository,
   ) { }
 
-  @post('/users/login',{
+  @post('/app/registerUser', {
+    responses: {
+      '200': {
+        description: 'AuthToken',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
+        },
+      },
+    },
+  }) async signUp(
+      @requestBody({
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(NewAuthenticateRequest, {
+              title: 'NewToken',
+            }),
+          },
+        },
+      })
+      newAuthenticateRequest: NewAuthenticateRequest,
+  ): Promise<User> {
+    const password = await hash(newAuthenticateRequest.password, await genSalt());
+    const savedUser = await this.userRepository.create(
+        _.omit(newAuthenticateRequest, 'password'),
+    );
+
+    await this.userRepository.userCredentials(savedUser.id).create({password});
+
+  //  await this.userRepository.userCredentials(savedUser.id).create({password});
+
+    return savedUser;
+  }
+
+  @post('/app/authenticate',{
         responses: {
           '200': {
             description: 'Access-Token',

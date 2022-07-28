@@ -1,0 +1,18 @@
+{
+  "ids": {
+    "MyUser": 2,
+    "User": 2,
+    "UserCredentials": 2
+  },
+  "models": {
+    "MyUser": {
+      "1": "{\"name\":\"yousuf\",\"dob\":\"2022-07-28T15:29:42.529Z\",\"email\":\"yousuf@gmail.com\",\"mobileNumber\":9919102122,\"id\":1}"
+    },
+    "User": {
+      "e81a51fd-ae45-4bc9-a993-f1203c5ff934": "{\"id\":\"e81a51fd-ae45-4bc9-a993-f1203c5ff934\",\"email\":\"yousuf3@gmail.com\"}"
+    },
+    "UserCredentials": {
+      "2f17c423-44a6-4345-a497-d8fbe0f3a3e5": "{\"id\":\"2f17c423-44a6-4345-a497-d8fbe0f3a3e5\",\"password\":\"$2a$10$gLPHMoA/lBuiWDRmYTpSF.//Wb4.dP7iQ1Jul4ZHv04R0v8KwMBbO\",\"userId\":\"e81a51fd-ae45-4bc9-a993-f1203c5ff934\"}"
+    }
+  }
+}
