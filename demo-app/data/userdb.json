@@ -1,0 +1,18 @@
+{
+  "ids": {
+    "User": 9
+  },
+  "models": {
+    "User": {
+      "1": {
+        "name": "yousuf",
+        "dob": null,
+        "email": "yousuf.roushan@gmail.com",
+        "mobileNumber": 9581078678
+      },
+      "6": "{\"name\":\"roushan\",\"dob\":\"1986-07-27T12:41:05.942Z\",\"email\":\"yousuf2learn@gmail.com\",\"mobileNumber\":9059009353,\"id\":6}",
+      "7": "{\"name\":\"roushan\",\"dob\":\"1986-07-27T12:41:05.942Z\",\"email\":\"yousuf2learn@gmail.com\",\"mobileNumber\":9059009353,\"id\":7}",
+      "8": "{\"name\":\"roushan\",\"address\":\"104, 102\",\"dob\":\"1986-07-27T12:41:05.942Z\",\"email\":\"yousuf2learn@gmail.com\",\"mobileNumber\":9059009353,\"id\":8}"
+    }
+  }
+}
